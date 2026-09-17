@@ -12,6 +12,7 @@
 -- 27/05/2026  Eduardo Sánchez  Versión inicial con Caso 1.
 -- 27/05/2026  Juan Pérez       Se agregó la consulta para el Caso 2 (reabastecimiento).
 -- 28/05/2026  Eduardo Sánchez  Se agregan dos consultas mas  stock promedio y consto inventario.
+-- 30/05/2026  Eduardo Sánchez  Se agregan tres consultas: 5,6 y 7.
 
 -- ===============================================================================================
 
@@ -55,6 +56,8 @@ WHERE stock < 100;
 -- saber cuántos libros están por encima de ese promedio y cuántos por debajo (esto último puedes hacerlo 
 -- con dos consultas o una condicional). 
 -- ==========================================================================================================
+
+
 SELECT 
 	ROUND(AVG(stock),2) AS stock_promedio_todos_libros
 FROM bookify.libros;
@@ -76,8 +79,59 @@ GROUP BY estado_stock;
 -- ¿cuánto valdría todo el inventario actual? 
 -- ==========================================================================================================
 
+
 SELECT
 	SUM((stock) * 350) AS valor_total_350
 FROM  bookify.libros;
 
+
+
+
+-- CASO 5
+-- ==========================================================================================================
+-- El gerente de compras quiere saber el precio promedio de los libros por categoría, pero solo de aquellas
+-- categorías cuyo precio promedio sea mayor a $20. El resultado debe mostrarse con dos decimales. 
+-- Muestra el nombre de la categoría y  el precio promedio.
+-- ==========================================================================================================
+
+SELECT 
+	categoria_id,
+	ROUND(AVG(precio),2) AS precio_promedio
+FROM
+	bookify.libros
+GROUP BY
+	categoria_id
+HAVING 
+	AVG(precio) > 20;
+
+
+-- CASO 6
+-- ==========================================================================================================
+-- El sistema de reabastecimiento debe calcular cuántas cajas de 12 unidades se necesitan para empacar todo el 
+-- stock actual de cada libro. No se pueden enviar cajas parciales, siempre se debe usar la caja completa 
+-- siguiente si sobran unidades. Muestra el título, el stock actual y las cajas necesarias.
+-- ==========================================================================================================
+
+
+SELECT
+	titulo,
+	stock,
+	CEIL(stock/12.0) AS cajas_necesarias
+FROM 
+	bookify.libros;
+
+
+-- CASO 7
+-- ==========================================================================================================
+-- El área de logística quiere saber, de cada libro, cuántas docenas completas se pueden formar con el stock 
+-- actual y cuántas unidades sueltas sobran. Muestra el título, las docenas completas y las unidades sueltas.
+-- ==========================================================================================================
+
+
+SELECT 
+	titulo,
+	stock,
+	FLOOR(stock/ 12) AS docenas_completas,
+	stock % 12 As unidades_sueltas
+	FROM bookify.libros;
 

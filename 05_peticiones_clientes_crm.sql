@@ -1,7 +1,7 @@
 -- ========================================================================
 
 -- AUTOR:    		Sánchez Lugo Eduardo Alejandro.
--- FECHA:			12/O6/2026
+-- FECHA:			01/O6/2026
 -- DB: 		 		Librería.
 -- MOTOR:           POSTGRESQL.
 -- DESCRIPCIÓN:  	Consultas del área de almace.
@@ -9,7 +9,7 @@
 
 -- ===============================================================================================
 -- HISTORIAL:
--- 01/06/2026  Eduardo Sánchez  Versión inicial con Caso 1-5.
+-- 01/06/2026  Eduardo Sánchez  Versión inicial con Caso 1.
 
 
 -- ===============================================================================================
@@ -59,56 +59,17 @@ ORDER BY
 -- =======================================================================================================
 
 SELECT 
-	CONCAT(nombre, ' ', apellidos) AS nombre_completo,
-	email
-	
+	telefono IS NULL,
+	email IS 	
 FROM
-	bookify.clientes
-WHERE
-	telefono IS NULL
-AND
-	email IS NOT NULL;
+	bookify.clientes;
 
 
 
--- CASO 4
--- =======================================================================================================
--- El gerente de ventas necesita saber cuántos pedidos ha hecho cada cliente (cuenta de pedidos por cliente). 
--- Solo muestra a los clientes que tienen al menos 1 pedido, ordenados de mayor a menor número de pedidos.
--- =======================================================================================================
-
-
-SELECT 
-	cliente_id,
-	COUNT(estado) AS total_pedidos
-FROM
-	bookify.pedidos
-GROUP BY
-	cliente_id
-ORDER BY
-	total_pedidos DESC;
-
-
--- CASO 5
--- =======================================================================================================
--- El equipo de datos quiere saber, de todos los clientes registrados, cuál es el cliente más antiguo 
--- (el de fecha_registro más temprana) y el cliente más reciente (el de fecha_registro más reciente). 
--- Muestra nombre completo y fecha de registro de ambos.
--- =======================================================================================================
 
 
 
-SELECT * FROM bookify.clientes;
 
-SELECT
-	CONCAT(nombre, ' ', apellidos) AS nombre_completo,
-	fecha_registro
-FROM 
-	bookify.clientes	
-WHERE
-	fecha_registro = (SELECT MIN(fecha_registro)FROM bookify.clientes)
-	OR
-	fecha_registro = (SELECT MAX(fecha_registro)FROM bookify.clientes);
 
 
 
