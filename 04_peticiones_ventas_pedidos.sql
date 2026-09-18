@@ -11,6 +11,7 @@
 -- HISTORIAL:
 -- 28/05/2026  Eduardo Sánchez  Versión inicial con Caso 1.
 -- 29/05/2026  Roxana Sosa 		Se agregó caso 2, 3, 4 y 5.
+-- 02/06/2026  Roxana Sosa 		Se agregó caso 6,7 y 8.
 
 -- ===============================================================================================
 
@@ -77,4 +78,63 @@ SELECT
 	ROUND(AVG(total),2) AS total_promedio
 FROM bookify.pedidos
 WHERE estado = 'entregado';
+
+
+-- CASO 6	
+-- ==================================================================================================================
+-- El equipo de marketing quiere identificar a los clientes que han gastado más de $ 50 en total 
+-- (suma de todos sus pedidos). Muestra el ID del cliente y el total gastado, sin decimales. Ordena de mayor 
+-- a menor gasto.
+-- ==================================================================================================================
+
+
+SELECT
+	cliente_id,
+	ROUND(SUM(total), 0) AS total_gastado
+FROM 
+	bookify.pedidos
+GROUP BY
+	cliente_id
+HAVING
+	SUM(total) > 50
+ORDER BY 
+	total_gastado DESC;
 	
+
+-- CASO 7	
+-- ==================================================================================================================
+-- El departamento de logística necesita saber, para cada estado de pedido, el promedio de gastos de envío. 
+-- La empresa presupuesta de manera conservadora, por lo que cualquier cálculo de costos debe ajustarse al siguiente
+-- número entero hacia arriba. Muestra el estado del pedido y el gasto de envío promedio ajustado.
+-- ==================================================================================================================
+
+
+SELECT
+	estado,
+	CEIL(AVG(gastos_envio)) AS envio_promedio_ajustado
+FROM 
+	bookify.pedidos
+GROUP BY
+	estado;
+
+
+-- CASO 8	
+-- ==================================================================================================================
+-- El director financiero quiere un reporte de totales de pedidos por cliente, pero solo de aquellos clientes 
+-- cuyo total promedio por pedido esté entre $30 y $200 (inclusive). Muestra el ID del cliente y el promedio
+-- por pedido, con un decimal. Adicionalmente, por razones de auditoría, incluye una versión del mismo promedio 
+-- recortando los decimales sin redondear, para comparar ambos cálculos.
+-- ==================================================================================================================
+
+
+SELECT
+	cliente_id,
+	ROUND(AVG(total),1) AS promedio_decimal,
+	TRUNC(AVG(TOTAL), 0) AS promedio_recortado
+FROM 
+	bookify.pedidos
+GROUP BY 
+	cliente_id
+HAVING
+	AVG(total) BETWEEN 30 AND 200;
+
