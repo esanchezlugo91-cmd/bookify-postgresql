@@ -97,7 +97,7 @@ ORDER BY
 SELECT
 	CONCAT(nombre, ' ', apellidos) AS nombre_completo, 
 	fecha_registro,
-	EXTRACT(YEAR FROM AGE(CURRENT_DATE, fecha_registro))::int AS anis_completos
+	EXTRACT(YEAR FROM AGE(CURRENT_DATE, fecha_registro))::int AS anios_completos
 FROM bookify.clientes
 ORDER BY
 	fecha_registro ASC;
