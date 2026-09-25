@@ -12,7 +12,8 @@
 -- 27/05/2026  Eduardo Sánchez  Versión inicial con Caso 1.
 -- 27/05/2026  Juan Pérez       Se agregó la consulta para el Caso 2 (reabastecimiento).
 -- 28/05/2026  Eduardo Sánchez  Se agregan dos consultas mas  stock promedio y consto inventario.
--- 30/05/2026  Eduardo Sánchez  Se agregan tres consultas: 5,6 y 7.
+-- 30/05/2026  Eduardo Sánchez  Se agregan tres consultas: 5,6 y 7
+-- 11/06/2026  Eduardo Sánchez  Se agregan tres consultas: 8 y 9.
 
 -- ===============================================================================================
 
@@ -134,4 +135,41 @@ SELECT
 	FLOOR(stock/ 12) AS docenas_completas,
 	stock % 12 As unidades_sueltas
 	FROM bookify.libros;
+
+	
+-- CASO 8
+-- =======================================================================================================
+-- El área de catálogo necesita un listado de todos los libros junto con el nombre de su categoría. 
+-- Muestra el título del libro y el nombre de la categoría.
+-- =======================================================================================================
+
+SELECT
+	libros.titulo,
+	categorias.nombre
+FROM 
+	bookify.libros
+JOIN bookify.categorias ON libros.categoria_id = categorias.id
+ORDER BY
+	categorias.nombre ASC;
+
+
+
+-- CASO 9
+-- =======================================================================================================
+-- El equipo de logística necesita ver todos los pedidos que incluyan libros con stock menor a 10 unidades, 
+-- para priorizar su surtido. Muestra número de pedido, título del libro y stock actual.
+-- =======================================================================================================
+
+SELECT 
+	pedidos.numero_pedido,
+	libros.titulo,
+	libros.stock
+FROM 
+	bookify.libros 
+JOIN 
+	bookify.detalles_pedido ON libros.id = detalles_pedido.libro_id
+JOIN 
+	bookify.pedidos ON detalles_pedido.pedido_id = pedidos.id
+WHERE
+	libros.stock < 70;
 
